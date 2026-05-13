@@ -5,6 +5,7 @@ import express, {
 } from "express";
 import cors from "cors";
 import cookieParse from "cookie-parser";
+import notFound from "./middleware/notFound.js";
 
 const app: Application = express();
 
@@ -19,5 +20,6 @@ app.get("/", (req: Request, res: Response) => {
     uptime: process.uptime,
   });
 });
+app.use(notFound);
 
 export default app;
