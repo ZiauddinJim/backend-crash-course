@@ -6,12 +6,15 @@ import express, {
 import cors from "cors";
 import cookieParse from "cookie-parser";
 import notFound from "./middleware/notFound.js";
+import router from "./routes/routes.js";
 
 const app: Application = express();
 
 app.use(cors());
 app.use(cookieParse());
 app.use(express.json());
+
+app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({
