@@ -1,0 +1,141 @@
+1. What is the difference between DELETE, TRUNCATE, and DROP?
+Answer:
+DELETE removes specific rows from a table using WHERE.
+TRUNCATE removes all rows quickly but keeps the table structure.
+DROP removes the entire table including structure.
+Example:
+DELETE FROM users WHERE id = 1;
+TRUNCATE TABLE users;
+DROP TABLE users;
+
+----------------------------------------
+2. What is a PRIMARY KEY?
+Answer:
+
+A PRIMARY KEY uniquely identifies each row in a table.
+
+Important Points:
+Must be unique
+Cannot contain NULL
+One table can have only one primary key
+Example:
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+----------------------------------------
+3. Difference between PRIMARY KEY and UNIQUE KEY
+| PRIMARY KEY           | UNIQUE KEY                     |
+| --------------------- | ------------------------------ |
+| Cannot contain NULL   | Can contain NULL               |
+| Only one per table    | Multiple allowed               |
+| Used to identify rows | Used to avoid duplicate values |
+
+----------------------------------------
+4. What is a FOREIGN KEY?
+Answer:
+
+A FOREIGN KEY creates a relationship between two tables.
+
+Example:
+CREATE TABLE departments (
+    id INT PRIMARY KEY
+);
+
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    department_id INT,
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
+);
+----------------------------------------
+5. What is JOIN in SQL?
+Answer:
+JOIN is used to combine data from multiple tables.
+
+INNER JOIN
+Returns only matching records from both tables.
+
+Example:
+SELECT users.name, departments.name
+FROM users
+INNER JOIN departments
+ON users.department_id = departments.id;
+
+LEFT JOIN
+Returns all data from the left table and matching data from the right table.
+SELECT users.name, departments.name
+FROM users
+LEFT JOIN departments
+ON users.department_id = departments.id;
+----------------------------------------
+6. What is Normalization?
+Answer:
+
+Normalization organizes database tables to reduce duplicate data and improve consistency.
+
+1NF
+Atomic values
+No multiple values in one column
+2NF
+Must be in 1NF
+No partial dependency
+3NF
+Must be in 2NF
+No transitive dependency
+
+----------------------------------------
+7. What is Indexing?
+Answer:
+
+Indexing improves database query performance.
+
+Why use Index?
+Faster searching
+Faster SELECT queries
+Better performance on large tables
+
+Example:
+CREATE INDEX idx_email
+ON users(email);
+----------------------------------------
+8. Difference between WHERE and HAVING
+| WHERE                                   | HAVING                        |
+| --------------------------------------- | ----------------------------- |
+| Filters rows                            | Filters grouped data          |
+| Used before GROUP BY                    | Used after GROUP BY           |
+| Cannot use aggregate functions directly | Used with aggregate functions |
+
+Example:
+SELECT * FROM employees
+WHERE salary > 30000;
+
+SELECT department, AVG(salary)
+FROM employees
+GROUP BY department
+HAVING AVG(salary) > 30000;
+----------------------------------------
+9. What is a Transaction in SQL?
+Answer:
+
+A transaction is a group of SQL operations executed together.
+
+If all operations succeed → COMMIT
+If any operation fails → ROLLBACK
+
+COMMIT
+Saves changes permanently.
+
+ROLLBACK
+Undo changes.
+
+----------------------------------------
+10. Write a query to find the second highest salary
+Answer:
+SELECT MAX(salary) AS second_highest_salary
+FROM employees
+WHERE salary < (
+    SELECT MAX(salary)
+    FROM employees
+);
