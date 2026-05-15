@@ -1,0 +1,191 @@
+1. What is the difference between Primary Key and Foreign Key?
+Answer:
+
+A PRIMARY KEY uniquely identifies each row in a table, while a FOREIGN KEY creates a relationship between two tables.
+| PRIMARY KEY              | FOREIGN KEY                            |
+| ------------------------ | -------------------------------------- |
+| Uniquely identifies rows | References another table’s primary key |
+| Cannot contain NULL      | Can contain NULL                       |
+| One per table            | Multiple allowed                       |
+| Ensures uniqueness       | Ensures referential integrity          |
+
+Example:
+CREATE TABLE departments (
+    id INT PRIMARY KEY
+);
+
+CREATE TABLE employees (
+    id INT PRIMARY KEY,
+    department_id INT,
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
+);
+
+2. Why is normalization important?
+Answer:
+
+Normalization is important because it:
+
+Reduces duplicate data
+Improves data consistency
+Saves storage space
+Makes database maintenance easier
+Prevents update anomalies
+Example:
+
+Instead of storing department names repeatedly in the employee table, we store department information in a separate table.
+
+----------------------------------------
+3. What is a JOIN?
+Answer:
+
+JOIN is used to combine data from multiple tables based on related columns.
+
+Common Types:
+INNER JOIN
+LEFT JOIN
+RIGHT JOIN
+FULL JOIN
+Example:
+SELECT employees.name, departments.name
+FROM employees
+INNER JOIN departments
+ON employees.department_id = departments.id;
+
+----------------------------------------
+4. Difference between SQL and MongoDB?
+Answer:
+| SQL                          | MongoDB                               |
+| ---------------------------- | ------------------------------------- |
+| Relational Database          | NoSQL Database                        |
+| Uses tables                  | Uses collections/documents            |
+| Structured schema            | Flexible schema                       |
+| Uses SQL queries             | Uses JSON-like documents              |
+| Better for complex relations | Better for scalable/unstructured data |
+
+Example:
+
+SQL → MySQL, PostgreSQL
+MongoDB → Document-based database
+----------------------------------------
+5. What is a composite key?
+Answer:
+
+A composite key is a primary key made using two or more columns.
+
+Example:
+CREATE TABLE student_courses (
+    student_id INT,
+    course_id INT,
+    PRIMARY KEY(student_id, course_id)
+);
+
+Here both columns together uniquely identify each row.
+
+----------------------------------------
+6. What is a weak entity?
+Answer:
+
+A weak entity is an entity that cannot be identified uniquely without another entity.
+
+It depends on a strong entity.
+
+Example:
+Employee → Strong Entity
+Dependent Family Member → Weak Entity
+
+A family member cannot exist without the employee.
+----------------------------------------
+7. Why do we use constraints?
+Answer:
+
+Constraints are used to enforce rules on data and maintain data integrity.
+
+Common Constraints:
+PRIMARY KEY
+FOREIGN KEY
+UNIQUE
+NOT NULL
+CHECK
+DEFAULT
+
+Example:
+CREATE TABLE users (
+    id INT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE,
+    age INT CHECK(age >= 18)
+);
+----------------------------------------
+8. Explain many-to-many relationship.
+Answer:
+
+A many-to-many relationship occurs when:
+
+One record in Table A relates to many records in Table B
+One record in Table B relates to many records in Table A
+Example:
+
+Students and Courses
+
+One student can enroll in many courses
+One course can have many students
+Solution:
+
+Use a junction table.
+CREATE TABLE student_courses (
+    student_id INT,
+    course_id INT
+);
+
+----------------------------------------
+9. What is the difference between Clustered and Non-Clustered Index?
+Answer:
+| Clustered Index                 | Non-Clustered Index         |
+| ------------------------------- | --------------------------- |
+| Stores actual table data        | Stores pointer to data      |
+| Table data is physically sorted | Data remains unsorted       |
+| Only one per table              | Multiple allowed            |
+| Faster for range queries        | Faster for specific lookups |
+
+Example:
+PRIMARY KEY usually creates a clustered index.
+
+----------------------------------------
+10. Explain Database Sharding and Partitioning. When would you use each?
+Partitioning
+Answer:
+
+Partitioning divides a large table into smaller parts within the same database server.
+
+Types:
+Range Partitioning
+List Partitioning
+Hash Partitioning
+Use Case:
+
+Used when tables become very large and query performance decreases.
+
+Sharding
+Answer:
+
+Sharding distributes data across multiple database servers.
+
+Each server stores part of the data.
+
+Use Case:
+
+Used for:
+
+Very large applications
+High traffic systems
+Horizontal scaling
+Example:
+Users A–M → Server 1
+Users N–Z → Server 2
+
+Main Difference
+| Partitioning      | Sharding           |
+| ----------------- | ------------------ |
+| Same server       | Multiple servers   |
+| Vertical scaling  | Horizontal scaling |
+| Easier management | Better scalability |
